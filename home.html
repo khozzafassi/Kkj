@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Discover premium wallets, watch boxes, and fashion essentials at KHOZZA. Luxury crafted to last." />
+    <meta name="author" content="KHOZZA" />
+    <meta name="keywords" content="luxury wallets, watch boxes, fashion essentials, KHOZZA, premium accessories" />
+    <title>KHOZZA • Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        :root { 
+            --bg: #050505; 
+            --card: #0f0f0f; 
+            --muted: #bfb6a0; 
+            --accent: #d4af37; 
+            --secondary: #2a2a2a; 
+            --text-primary: #ffffff; 
+            --text-muted: #8f8872; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text-primary); font-family: 'Inter', sans-serif; min-height: 100vh; line-height: 1.6; }
+        header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 24px 48px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            position: sticky; 
+            top: 0; 
+            background: var(--bg); 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+        }
+        .logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 28px; 
+            color: var(--accent); 
+            letter-spacing: 3px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+        }
+        nav { display: flex; gap: 24px; }
+        nav a { 
+            color: var(--muted); 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: color 0.3s ease, transform 0.2s ease; 
+            position: relative; 
+        }
+        nav a:hover { color: var(--accent); transform: translateY(-2px); }
+        nav a::after { 
+            content: ''; 
+            position: absolute; 
+            width: 0; 
+            height: 2px; 
+            bottom: -5px; 
+            left: 0; 
+            background: var(--accent); 
+            transition: width 0.3s ease; 
+        }
+        nav a:hover::after { width: 100%; }
+        .hamburger { 
+            display: none; 
+            font-size: 28px; 
+            cursor: pointer; 
+            color: var(--accent); 
+        }
+        .cart-btn { 
+            background: var(--accent); 
+            color: #000; 
+            padding: 10px 20px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            text-decoration: none; 
+            transition: background 0.3s ease, transform 0.2s ease; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .cart-btn:hover { background: #c19a2f; transform: translateY(-2px); }
+        @media (max-width: 768px) { 
+            header { padding: 16px 24px; } 
+            nav { 
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 80px; 
+                right: 24px; 
+                background: var(--card); 
+                padding: 20px; 
+                border-radius: 12px; 
+                width: 200px; 
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+            } 
+            nav.show { display: flex; } 
+            .hamburger { display: block; } 
+            .cart-btn { padding: 8px 16px; font-size: 14px; } 
+        }
+        .hero { 
+            position: relative; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 48px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            overflow: hidden; 
+        }
+        .hero-slideshow { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 1; 
+            overflow: hidden; 
+        }
+        .hero-slide-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            opacity: 0; 
+            transition: opacity 1s ease; 
+        }
+        .hero-slide-img.show { opacity: 1; }
+        .hero-content { 
+            position: relative; 
+            z-index: 2; 
+            max-width: 600px; 
+        }
+        .hero-content h1 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 56px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            line-height: 1.2; 
+            color: var(--text-primary); 
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
+        }
+        .hero-content p { 
+            color: var(--muted); 
+            font-size: 18px; 
+            margin-bottom: 30px; 
+            max-width: 500px; 
+        }
+        .shop-links { 
+            display: flex; 
+            gap: 16px; 
+            flex-wrap: wrap; 
+        }
+        .pill { 
+            background: var(--secondary); 
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: var(--muted); 
+            font-weight: 500; 
+            text-decoration: none; 
+            transition: background 0.3s ease, transform 0.2s ease; 
+            cursor: pointer; 
+            user-select: none; 
+        }
+        .pill:hover { 
+            background: rgba(255, 255, 255, 0.1); 
+            transform: translateY(-2px); 
+        }
+        .models { 
+            text-align: center; 
+            padding: 60px 48px; 
+            background: var(--card); 
+            position: relative; 
+            overflow: hidden; 
+            min-height: 70vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .models h2 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 40px; 
+            margin-bottom: 40px; 
+            color: var(--accent); 
+        }
+        .models .slideshow { 
+            position: relative; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        .models img { 
+            max-width: 600px; 
+            width: 100%; 
+            max-height: 400px; 
+            height: auto; 
+            border-radius: 20px; 
+            object-fit: cover; 
+            transition: opacity 0.5s ease; 
+        }
+        footer { 
+            padding: 40px 48px; 
+            text-align: center; 
+            color: var(--text-muted); 
+            border-top: 1px solid rgba(255, 255, 255, 0.1); 
+            margin-top: 60px; 
+            font-size: 14px; 
+        }
+        @media (max-width: 768px) { 
+            header { padding: 16px 24px; } 
+            .hero { 
+                padding: 0 24px; 
+                height: 80vh; 
+                flex-direction: column; 
+                text-align: center; 
+            } 
+            .hero-content { 
+                padding-top: 20%; 
+                transform: translateY(-20px); 
+            } 
+            .hero-content h1 { font-size: 36px; } 
+            .hero-content p { font-size: 16px; } 
+            .models { padding: 40px 24px; min-height: 50vh; } 
+            .models h2 { font-size: 28px; } 
+            .models img { max-width: 100%; max-height: 300px; } 
+        }
+        .add-cart-box { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 1000; 
+            display: flex; 
+            gap: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">KHOZZA</div>
+        <nav id="nav">
+            <a href="index.html" aria-label="Home page">Home</a>
+            <a href="tracking.html" aria-label="Track your order">Tracking</a>
+            <a href="wallets.html" aria-label="Explore wallets">Wallets</a>
+            <a href="watchs.html" aria-label="Discover watch boxes">Watch Boxes</a>
+            <a href="fashion.html" aria-label="Shop fashion essentials">Fashion</a>
+            <a href="about.html" aria-label="About KHOZZA">About</a>
+            <a href="privacy.html" aria-label="Privacy policy">Privacy</a>
+            <a href="contact.html" aria-label="Contact us">Contact</a>
+        </nav>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> View Cart</a>
+            <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" aria-expanded="false" aria-controls="nav">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-slideshow">
+                <img src="slider1.jpg" class="hero-slide-img show" id="sliderImg0" alt="Luxury wallet showcase">
+                <img src="slider2.jpg" class="hero-slide-img" id="sliderImg1" alt="Elegant watch box display">
+                <img src="slider3.jpg" class="hero-slide-img" id="sliderImg2" alt="Timeless fashion essentials">
+            </div>
+            <div class="hero-content">
+                <h1>Luxury, Crafted to Last</h1>
+                <p>Discover handcrafted wallets, elegant watch boxes, and timeless fashion essentials. Made with premium materials and meticulous care.</p>
+                <div class="shop-links">
+                    <a href="wallets.html" class="pill">Explore Wallets</a>
+                    <a href="watchs.html" class="pill">Discover Watch Boxes</a>
+                    <a href="fashion.html" class="pill">Shop Fashion</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="models">
+            <h2>Our Fashion Icons</h2>
+            <div class="slideshow">
+                <img id="modelImg" src="model1.jpg" alt="Fashion model showcasing KHOZZA products">
+            </div>
+        </section>
+    </main>
+
+    <div class="add-cart-box">
+        <a class="pill" onclick="addToCart('Luxury Leather Wallet', 899, 'slider1.jpg')">Add Wallet</a>
+        <a class="pill" onclick="addToCart('Luxury Wooden Watch Box', 1299, 'slider2.jpg')">Add Watch Box</a>
+        <a class="pill" onclick="addToCart('Designer Scarf', 699, 'model1.jpg')">Add Scarf</a>
+    </div>
+
+    <footer>
+        © <span id="yr"></span> KHOZZA • All Rights Reserved
+    </footer>
+
+    <script>
+        // Year auto-update
+        document.getElementById('yr').textContent = new Date().getFullYear();
+
+        // Hamburger menu toggle
+        function toggleMenu() {
+            try {
+                const nav = document.getElementById('nav');
+                const hamburger = document.querySelector('.hamburger');
+                const isExpanded = nav.classList.toggle('show');
+                hamburger.setAttribute('aria-expanded', isExpanded);
+            } catch (e) {
+                console.error('Error toggling menu:', e);
+            }
+        }
+
+        // Preload images to avoid loading errors
+        const preloadImages = (images) => {
+            images.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        };
+
+        // Hero slideshow
+        const heroSlides = [
+            document.getElementById('sliderImg0'),
+            document.getElementById('sliderImg1'),
+            document.getElementById('sliderImg2')
+        ];
+        const heroImages = ['slider1.jpg', 'slider2.jpg', 'slider3.jpg'];
+        preloadImages(heroImages);
+        let heroSlideIndex = 0;
+        setInterval(() => {
+            try {
+                heroSlides.forEach(img => img.classList.remove('show'));
+                heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
+                heroSlides[heroSlideIndex].classList.add('show');
+            } catch (e) {
+                console.error('Error in hero slideshow:', e);
+            }
+        }, 5000);
+
+        // Models slideshow
+        const modelImg = document.getElementById('modelImg');
+        const modelImages = ['model1.jpg', 'model2.jpg', 'model3.jpg'];
+        preloadImages(modelImages);
+        let modelIndex = 0;
+        setInterval(() => {
+            try {
+                modelImg.style.opacity = 0;
+                setTimeout(() => {
+                    modelImg.src = modelImages[modelIndex];
+                    modelImg.style.opacity = 1;
+                    modelIndex = (modelIndex + 1) % modelImages.length;
+                }, 500);
+            } catch (e) {
+                console.error('Error in models slideshow:', e);
+            }
+        }, 5000);
+
+        // Add to cart functionality
+        function addToCart(name, price, image) {
+            try {
+                if (!window.localStorage) {
+                    alert('Local storage is disabled. Cannot add to cart.');
+                    return;
+                }
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push({ name, price: parseInt(price), image, qty: 1 });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                window.location.href = 'cart.html';
+            } catch (e) {
+                console.error('Error in addToCart:', e);
+                alert('Error adding to cart. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

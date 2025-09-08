@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore premium wallets at KHOZZA. Stylish and durable wallets for everyday use." />
+    <meta name="author" content="KHOZZA" />
+    <meta name="keywords" content="premium wallets, KHOZZA, leather wallets, slim wallets, accessories" />
+    <title>KHOZZA • Premium Wallets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        :root { 
+            --bg: #050505; 
+            --card: #0f0f0f; 
+            --muted: #bfb6a0; 
+            --accent: #d4af37; 
+            --secondary: #2a2a2a; 
+            --text-primary: #ffffff; 
+            --text-muted: #8f8872; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text-primary); font-family: 'Inter', system-ui, -apple-system, Arial, sans-serif; min-height: 100vh; line-height: 1.4; }
+        header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 20px 28px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            position: sticky; 
+            top: 0; 
+            background: var(--bg); 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+        }
+        .logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 22px; 
+            color: var(--accent); 
+            letter-spacing: 2px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+        }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .cart-btn { 
+            background: var(--accent); 
+            color: #000; 
+            padding: 8px 16px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            text-decoration: none; 
+            transition: background 0.3s ease, transform 0.2s ease; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .cart-btn:hover { background: #c19a2f; transform: translateY(-2px); }
+        .hamburger { 
+            display: none; 
+            font-size: 26px; 
+            cursor: pointer; 
+            color: var(--accent); 
+        }
+        nav { display: flex; gap: 18px; }
+        nav a { 
+            color: var(--muted); 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: color 0.3s ease, transform 0.2s ease; 
+            position: relative; 
+        }
+        nav a:hover { color: var(--accent); transform: translateY(-2px); }
+        nav a::after { 
+            content: ''; 
+            position: absolute; 
+            width: 0; 
+            height: 2px; 
+            bottom: -5px; 
+            left: 0; 
+            background: var(--accent); 
+            transition: width 0.3s ease; 
+        }
+        nav a:hover::after { width: 100%; }
+        @media (max-width: 768px) { 
+            header { padding: 16px 24px; } 
+            nav { 
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 70px; 
+                right: 24px; 
+                background: var(--card); 
+                padding: 15px; 
+                border-radius: 12px; 
+                width: 200px; 
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+            } 
+            nav.show { display: flex; } 
+            nav a { padding: 8px; font-size: 16px; } 
+            .hamburger { display: block; } 
+            .cart-btn { padding: 8px 16px; font-size: 14px; } 
+        }
+        .page-title { 
+            text-align: center; 
+            font-family: 'Cinzel', serif; 
+            font-size: 36px; 
+            margin: 30px 0; 
+            color: var(--accent); 
+        }
+        .products { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 20px; 
+            max-width: 1100px; 
+            margin: auto; 
+            padding: 20px; 
+        }
+        .product { 
+            background: var(--card); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 12px; 
+            text-align: center; 
+            padding: 20px; 
+            transition: transform 0.3s ease; 
+            overflow-wrap: break-word; 
+        }
+        .product:hover { transform: translateY(-5px); }
+        .swiper-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 400px; 
+            aspect-ratio: 3/4; 
+            margin: 0 auto 10px; 
+            overflow: hidden; 
+            border-radius: 10px; 
+        }
+        .swiper-slide { 
+            width: 100%; 
+            height: 100%; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            opacity: 0; 
+            transition: opacity 0.5s ease; 
+            object-fit: cover; 
+        }
+        .swiper-slide.active { opacity: 1; }
+        .product h3 { font-size: 20px; margin-bottom: 5px; }
+        .product p { color: var(--muted); margin-bottom: 10px; }
+        .price { color: var(--accent); font-size: 18px; margin-bottom: 10px; font-weight: 600; }
+        .buy-btn { 
+            display: inline-block; 
+            background: var(--accent); 
+            color: #000; 
+            padding: 10px 18px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            text-decoration: none; 
+            transition: background 0.3s ease, transform 0.2s ease; 
+            user-select: none; 
+        }
+        .buy-btn:hover { background: #c19a2f; transform: translateY(-2px); }
+        .add-to-cart-btn { 
+            display: inline-block; 
+            background: var(--secondary); 
+            color: var(--muted); 
+            padding: 10px 18px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            text-decoration: none; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: background 0.3s ease, transform 0.2s ease; 
+            margin-top: 10px; 
+            user-select: none; 
+        }
+        .add-to-cart-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+        .size-select { 
+            width: 100%; 
+            padding: 8px; 
+            border-radius: 6px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            background: #0b0b0b; 
+            color: var(--text-primary); 
+            margin-bottom: 12px; 
+        }
+        @media (max-width: 768px) { 
+            .products { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 15px; } 
+            .swiper-container { max-width: 300px; } 
+            .product { padding: 15px; } 
+            .page-title { font-size: 28px; } 
+        }
+        footer { 
+            padding: 40px 48px; 
+            text-align: center; 
+            color: var(--text-muted); 
+            border-top: 1px solid rgba(255, 255, 255, 0.1); 
+            margin-top: 40px; 
+            font-size: 14px; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">KHOZZA</div>
+        <div class="header-right">
+            <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> View Cart</a>
+            <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" aria-expanded="false" aria-controls="nav">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        <nav id="nav">
+            <a href="index.html" aria-label="Home page">Home</a>
+            <a href="wallets.html" aria-label="Explore wallets" style="color: var(--accent);">Wallets</a>
+            <a href="watches.html" aria-label="Discover watch boxes">Watch Boxes</a>
+            <a href="fashion.html" aria-label="Shop fashion essentials">Fashion</a>
+            <a href="about.html" aria-label="About KHOZZA">About</a>
+            <a href="privacy.html" aria-label="Privacy policy">Privacy</a>
+            <a href="contact.html" aria-label="Contact us">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="page-title">Our Premium Wallets</h1>
+        <section class="products">
+            <div class="product">
+                <div class="swiper-container" data-images='["image/wallet1.jpg","image/wallet1-2.jpg","image/wallet1-3.jpg"]'>
+                    <img src="image/wallet1.jpg" class="swiper-slide active" alt="Leather Slim Wallet - Black">
+                </div>
+                <h3>Leather Slim Wallet (Black)</h3>
+                <p>Compact and stylish wallet for everyday use</p>
+                <div class="price">₹799</div>
+                <select class="size-select" id="size1" aria-label="Select size for Leather Slim Wallet">
+                    <option value="" disabled selected>Select Size</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Slim">Slim</option>
+                </select>
+                <a href="order.html?name=Leather%20Slim%20Wallet&price=799&size=Standard&images=image/wallet1.jpg,image/wallet1-2.jpg,image/wallet1-3.jpg" class="buy-btn">Buy Now</a>
+                <a href="#" class="add-to-cart-btn" onclick="addToCart('Leather Slim Wallet', 799, 'image/wallet1.jpg,image/wallet1-2.jpg,image/wallet1-3.jpg', 'size1')">Add to Cart</a>
+            </div>
+            <div class="product">
+                <div class="swiper-container" data-images='["image/wallet2.jpg","image/wallet2-2.jpg","image/wallet2-3.jpg"]'>
+                    <img src="image/wallet2.jpg" class="swiper-slide active" alt="Premium Leather Wallet - Brown">
+                </div>
+                <h3>Premium Leather Wallet (Brown)</h3>
+                <p>Durable wallet with multiple compartments</p>
+                <div class="price">₹999</div>
+                <select class="size-select" id="size2" aria-label="Select size for Premium Leather Wallet">
+                    <option value="" disabled selected>Select Size</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Slim">Slim</option>
+                </select>
+                <a href="order.html?name=Premium%20Leather%20Wallet&price=999&size=Standard&images=image/wallet2.jpg,image/wallet2-2.jpg,image/wallet2-3.jpg" class="buy-btn">Buy Now</a>
+                <a href="#" class="add-to-cart-btn" onclick="addToCart('Premium Leather Wallet', 999, 'image/wallet2.jpg,image/wallet2-2.jpg,image/wallet2-3.jpg', 'size2')">Add to Cart</a>
+            </div>
+            <div class="product">
+                <div class="swiper-container" data-images='["image/wallet3.jpg","image/wallet3-2.jpg","image/wallet3-3.jpg"]'>
+                    <img src="image/wallet3.jpg" class="swiper-slide active" alt="Minimalist Wallet - Black">
+                </div>
+                <h3>Minimalist Wallet (Black)</h3>
+                <p>Sleek design for modern minimalists</p>
+                <div class="price">₹699</div>
+                <select class="size-select" id="size3" aria-label="Select size for Minimalist Wallet">
+                    <option value="" disabled selected>Select Size</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Slim">Slim</option>
+                </select>
+                <a href="order.html?name=Minimalist%20Wallet&price=699&size=Standard&images=image/wallet3.jpg,image/wallet3-2.jpg,image/wallet3-3.jpg" class="buy-btn">Buy Now</a>
+                <a href="#" class="add-to-cart-btn" onclick="addToCart('Minimalist Wallet', 699, 'image/wallet3.jpg,image/wallet3-2.jpg,image/wallet3-3.jpg', 'size3')">Add to Cart</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        © <span id="yr"></span> KHOZZA • All Rights Reserved
+    </footer>
+
+    <script>
+        // Year auto-update
+        document.getElementById('yr').textContent = new Date().getFullYear();
+
+        // Hamburger menu toggle
+        function toggleMenu() {
+            try {
+                const nav = document.getElementById('nav');
+                const hamburger = document.querySelector('.hamburger');
+                const isExpanded = nav.classList.toggle('show');
+                hamburger.setAttribute('aria-expanded', isExpanded);
+            } catch (e) {
+                console.error('Error toggling menu:', e);
+            }
+        }
+
+        // Preload images to avoid loading errors
+        const preloadImages = (images) => {
+            images.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        };
+
+        // Swiper slideshow for products
+        document.querySelectorAll('.swiper-container').forEach(container => {
+            try {
+                const images = JSON.parse(container.dataset.images || '[]');
+                preloadImages(images);
+                if (!images.length) {
+                    const img = container.querySelector('.swiper-slide');
+                    if (!img) {
+                        const fallbackImg = document.createElement('img');
+                        fallbackImg.src = 'image/default1.jpg';
+                        fallbackImg.classList.add('swiper-slide', 'active');
+                        fallbackImg.alt = 'Default product image';
+                        container.appendChild(fallbackImg);
+                        console.warn('No images provided for swiper, using default.');
+                    }
+                    return;
+                }
+                let index = 0;
+                const slides = container.querySelectorAll('.swiper-slide');
+                if (slides.length === 0) {
+                    images.forEach((src, i) => {
+                        const img = document.createElement('img');
+                        img.src = src;
+                        img.classList.add('swiper-slide');
+                        img.alt = container.parentElement.querySelector('h3').textContent + ' - Image ' + (i + 1);
+                        if (i === 0) img.classList.add('active');
+                        container.appendChild(img);
+                    });
+                }
+                setInterval(() => {
+                    try {
+                        const slides = container.querySelectorAll('.swiper-slide');
+                        slides.forEach(slide => slide.classList.remove('active'));
+                        index = (index + 1) % images.length;
+                        slides[index].classList.add('active');
+                    } catch (e) {
+                        console.error('Error in swiper interval:', e);
+                    }
+                }, 3000);
+            } catch (e) {
+                console.error('Error in swiper setup:', e);
+                const img = container.querySelector('.swiper-slide');
+                if (!img) {
+                    const fallbackImg = document.createElement('img');
+                    fallbackImg.src = 'image/default1.jpg';
+                    fallbackImg.classList.add('swiper-slide', 'active');
+                    fallbackImg.alt = 'Default product image';
+                    container.appendChild(fallbackImg);
+                }
+            }
+        });
+
+        // Add to cart with duplicate prevention
+        function addToCart(name, price, images, sizeId) {
+            try {
+                const size = document.getElementById(sizeId).value;
+                if (!size) {
+                    alert('Please select a size.');
+                    return;
+                }
+
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                const existingItem = cart.find(item => item.name === name && item.size === size);
+
+                if (existingItem) {
+                    existingItem.qty = (existingItem.qty || 1) + 1;
+                } else {
+                    cart.push({ name, price: parseInt(price), images: images.split(','), qty: 1, size });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(`${name} (Size: ${size}) added to cart!`);
+                console.log('Cart updated:', cart);
+                window.location.href = 'cart.html';
+            } catch (e) {
+                console.error('Error adding to cart:', e);
+                alert('Error adding to cart. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

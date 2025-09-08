@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KHOZZA • Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050505;
+  --card: #0f0f0f;
+  --muted: #bfb6a0;
+  --accent: #d4af37;
+  --secondary: #2a2a2a;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
+  min-height: 100vh;
+  line-height: 1.4;
+}
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid #111;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 20;
+}
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.addcart-btn {
+  background: var(--accent);
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+.addcart-btn:hover {
+  background: #c19a2f;
+}
+nav {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+}
+.hamburger {
+  font-size: 26px;
+  cursor: pointer;
+  color: var(--accent);
+}
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    background: var(--card);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #181818;
+    width: 200px;
+  }
+  nav.show {
+    display: flex;
+  }
+  nav a {
+    padding: 8px;
+    font-size: 16px;
+  }
+}
+
+/* Layout */
+.wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 28px;
+}
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+.gallery {
+  background: var(--card);
+  border: 1px solid #181818;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.main-img {
+  width: 800px;
+  height: 1000px;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  user-select: none;
+  pointer-events: none;
+}
+.thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.thumbs img {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.thumbs img.active {
+  border-color: var(--accent);
+}
+@media (max-width: 768px) {
+  .main-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .thumbs img {
+    width: 60px;
+    height: 75px;
+  }
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid #181818;
+  border-radius: 14px;
+  padding: 18px;
+  overflow-wrap: break-word;
+}
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+.sub {
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 10px 0 14px;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.size-selector {
+  margin: 14px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.size-selector label {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+.size-selector select {
+  background: var(--secondary);
+  color: #fff;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+.size-selector select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.size-selector select option {
+  background: var(--card);
+  color: #fff;
+}
+.opts {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+.opt {
+  background: #121212;
+  border: 1px solid #202020;
+  color: #ddd;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.opt.active {
+  border-color: var(--accent);
+  color: #000;
+  background: var(--accent);
+}
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+.qty input {
+  width: 64px;
+  background: #121212;
+  border: 1px solid #2a2a2a;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.btn.cart {
+  background: #242424;
+  border: 1px solid #2d2d2d;
+  color: #e7e0cc;
+}
+.btn.buy {
+  background: var(--accent);
+  color: #000;
+}
+.meta {
+  margin-top: 16px;
+  color: #9c9278;
+  font-size: 14px;
+}
+@media (max-width: 768px) {
+  .size-selector {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .size-selector select {
+    width: 100%;
+    max-width: 150px;
+  }
+}
+
+footer {
+  padding: 20px;
+  text-align: center;
+  color: #8f8872;
+  border-top: 1px solid #111;
+  margin-top: 30px;
+}
+
+/* Modal */
+.modal-backdrop {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 50;
+}
+.modal {
+  background: #0f0f0f;
+  border: 1px solid #1f1f1f;
+  border-radius: 16px;
+  max-width: 420px;
+  width: 92%;
+  padding: 18px;
+}
+.modal h3 {
+  margin-bottom: 10px;
+}
+.modal p {
+  margin-bottom: 16px;
+}
+.modal .actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.modal a,
+.modal button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+.modal .wsp {
+  background: #25D366;
+  color: #000;
+}
+.modal .online {
+  background: var(--accent);
+  color: #000;
+}
+.modal .close {
+  margin-top: 10px;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #ddd;
+  border-radius: 10px;
+  padding: 10px 12px;
+  width: 100%;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">KHOZZA</div>
+  <div class="header-right">
+    <a href="cart.html" class="addcart-btn">View Cart</a>
+    <div class="hamburger" onclick="document.getElementById('nav').classList.toggle('show')">☰</div>
+  </div>
+  <nav id="nav">
+    <a href="index.html">Home</a>
+    <a href="wallets.html">Wallets</a>
+    <a href="watches.html">Watch Boxes</a>
+    <a href="fashion.html">Fashion</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <div class="gallery" id="gallery">
+      <img id="mainImg" class="main-img" src="default1.jpg" alt="Product">
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <div class="panel">
+      <h1 id="productName">Product Name</h1>
+      <div class="sub">Exclusive product • Premium quality</div>
+      <div class="price" id="productPrice">₹0</div>
+
+      <div class="size-selector">
+        <label for="size">Select Size:</label>
+        <select id="size" name="size" required>
+          <option value="" disabled selected>Choose Size</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+
+      <div class="opts" id="colors">
+        <button class="opt active" onclick="selectOpt(this, 'color')">Black</button>
+        <button class="opt" onclick="selectOpt(this, 'color')">Brown</button>
+        <button class="opt" onclick="selectOpt(this, 'color')">Tan</button>
+        <button class="opt" onclick="selectOpt(this, 'color')">Gray</button>
+      </div>
+
+      <div class="qty">
+        <label for="q">Qty</label>
+        <input id="q" type="number" min="1" value="1">
+      </div>
+
+      <div class="btns">
+        <button class="btn cart" onclick="addToCart()">Add to Cart</button>
+        <button class="btn buy" onclick="openBuyOptions()">Buy Now</button>
+      </div>
+
+      <div class="meta">Free shipping over ₹999 • 7-day easy return</div>
+    </div>
+  </div>
+</main>
+
+<div id="buyModal" class="modal-backdrop" aria-hidden="true">
+  <div class="modal">
+    <h3>How would you like to order?</h3>
+    <p>Choose WhatsApp to chat with us or Pay Online to complete order on our checkout page.</p>
+    <div class="actions">
+      <a id="waBtn" class="wsp" href="#" target="_blank">🟢 WhatsApp Order</a>
+      <button id="onlineBtn" class="online" onclick="goToCheckout()">💳 Pay Online</button>
+    </div>
+    <button class="close" onclick="closeBuyModal()">Close</button>
+  </div>
+</div>
+
+<footer>© 2025 KHOZZA. All Rights Reserved.</footer>
+
+<script>
+// Color selection
+let selectedColor = "Black";
+function selectOpt(el, type) {
+  try {
+    document.querySelectorAll(`#${type}s .opt`).forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    selectedColor = el.textContent.trim();
+  } catch (e) {
+    console.error("Error in selectOpt:", e);
+    alert("Error selecting color. Please try again.");
+  }
+}
+
+function addToCart() {
+  try {
+    const size = document.getElementById('size').value;
+    if (!size) {
+      alert('Please select a size before adding to cart.');
+      return;
+    }
+    const qty = parseInt(document.getElementById('q').value) || 1;
+    const name = document.getElementById('productName').textContent;
+    const price = parseInt(document.getElementById('productPrice').textContent.replace('₹', '')) || 0;
+    const color = selectedColor;
+    const images = document.getElementById('mainImg').src;
+
+    if (!name || name === "Product Name" || !price) {
+      alert('Invalid product details. Please try again.');
+      return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ name, price, qty, color, size, images: [images] });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = 'cart.html';
+  } catch (e) {
+    console.error("Error in addToCart:", e);
+    alert("Error adding to cart. Please try again.");
+  }
+}
+
+function openBuyOptions() {
+  try {
+    const size = document.getElementById('size').value;
+    if (!size) {
+      alert('Please select a size before proceeding.');
+      return;
+    }
+    document.getElementById('buyModal').style.display = 'flex';
+  } catch (e) {
+    console.error("Error in openBuyOptions:", e);
+    alert("Error opening buy options. Please try again.");
+  }
+}
+
+function closeBuyModal() {
+  try {
+    document.getElementById('buyModal').style.display = 'none';
+  } catch (e) {
+    console.error("Error in closeBuyModal:", e);
+  }
+}
+
+function goToCheckout() {
+  try {
+    const size = document.getElementById('size').value;
+    if (!size) {
+      alert('Please select a size before proceeding.');
+      return;
+    }
+    const name = encodeURIComponent(document.getElementById('productName').textContent);
+    const price = encodeURIComponent(document.getElementById('productPrice').textContent.replace('₹', ''));
+    const qty = encodeURIComponent(document.getElementById('q').value);
+    const color = encodeURIComponent(selectedColor);
+    const sizeEncoded = encodeURIComponent(size);
+    const images = encodeURIComponent(document.getElementById('mainImg').src);
+    window.location.href = `checkout.html?product=${name}&price=${price}&qty=${qty}&color=${color}&size=${sizeEncoded}&images=${images}`;
+  } catch (e) {
+    console.error("Error in goToCheckout:", e);
+    alert("Error proceeding to checkout. Please try again.");
+  }
+}
+
+// Load product from URL
+(function () {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const name = decodeURIComponent(params.get("name") || "Default Product");
+    const price = params.get("price") || "0";
+    const color = decodeURIComponent(params.get("color") || "Black");
+    const size = decodeURIComponent(params.get("size") || "");
+    const images = decodeURIComponent(params.get("images") || "default1.jpg");
+
+    console.log("URL Parameters:", { name, price, color, size, images });
+
+    document.getElementById("productName").textContent = name;
+    document.getElementById("productPrice").textContent = "₹" + parseInt(price);
+    
+    if (size && ['S', 'M', 'L', 'XL', 'XXL'].includes(size)) {
+      document.getElementById("size").value = size;
+    } else {
+      document.getElementById("size").value = "";
+    }
+
+    selectedColor = color;
+    document.querySelectorAll("#colors .opt").forEach(b => {
+      b.classList.toggle("active", b.textContent.trim().toLowerCase() === color.toLowerCase());
+    });
+
+    const thumbsDiv = document.getElementById('thumbs');
+    const mainImg = document.getElementById('mainImg');
+    thumbsDiv.innerHTML = '';
+
+    const imgArr = images.split(',').filter(src => src.trim());
+    if (!imgArr.length) {
+      mainImg.src = "image/default1.jpg";
+      mainImg.alt = "Default product image";
+      thumbsDiv.innerHTML = '<img src="image/default1.jpg" class="active" alt="Default thumbnail">';
+      console.warn("No valid images provided, using default.");
+      return;
+    }
+
+    let currentIndex = 0;
+
+    function showImage(i) {
+      try {
+        const src = imgArr[i].trim();
+        mainImg.src = src;
+        mainImg.alt = `${name} - Image ${i + 1}`;
+        thumbsDiv.querySelectorAll('img').forEach(im => im.classList.remove('active'));
+        thumbsDiv.querySelectorAll('img')[i].classList.add('active');
+        currentIndex = i;
+      } catch (e) {
+        console.error("Error in showImage:", e);
+        mainImg.src = "image/default1.jpg";
+        thumbsDiv.innerHTML = '<img src="image/default1.jpg" class="active" alt="Default thumbnail">';
+      }
+    }
+
+    imgArr.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src.trim();
+      img.alt = `${name} - Thumbnail ${i + 1}`;
+      if (i === 0) img.classList.add('active');
+      img.onclick = () => showImage(i);
+      thumbsDiv.appendChild(img);
+    });
+    mainImg.src = imgArr[0].trim();
+    mainImg.alt = `${name} - Image 1`;
+
+    setInterval(() => {
+      let next = (currentIndex + 1) % imgArr.length;
+      showImage(next);
+    }, 3000);
+
+    let startX = 0, endX = 0;
+    const gallery = document.getElementById('gallery');
+    gallery.addEventListener('touchstart', e => {
+      startX = e.changedTouches[0].clientX;
+    });
+    gallery.addEventListener('touchend', e => {
+      endX = e.changedTouches[0].clientX;
+      if (Math.abs(endX - startX) > 50) {
+        if (endX < startX) showImage((currentIndex + 1) % imgArr.length);
+        else showImage((currentIndex - 1 + imgArr.length) % imgArr.length);
+      }
+    });
+  } catch (e) {
+    console.error("Error in initializing product:", e);
+    alert("Failed to load product details. Please try again.");
+    document.getElementById("productName").textContent = "Default Product";
+    document.getElementById("productPrice").textContent = "₹0";
+    document.getElementById("mainImg").src = "image/default1.jpg";
+    document.getElementById("mainImg").alt = "Default product image";
+    document.getElementById("thumbs").innerHTML = '<img src="image/default1.jpg" class="active" alt="Default thumbnail">';
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KHOZZA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cinzel', serif;
+      background: #000;
+      color: #fff;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Intro Section */
+    #intro {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      z-index: 10;
+    }
+
+    /* Logo Image */
+    .logo {
+      width: 120px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+
+    /* Wipe-left animation for KHOZZA */
+    .brand {
+      font-size: 72px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: gold;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+    .brand::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      animation: wipeLeft 2s ease forwards;
+    }
+    @keyframes wipeLeft {
+      0% { left: 0; }
+      100% { left: 100%; }
+    }
+
+    /* Tagline */
+    .tagline {
+      margin-top: 12px;
+      font-size: 20px;
+      color: #ddd;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+      animation-delay: 2.2s;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Model Image */
+    .girl {
+      margin-top: 25px;
+      width: 260px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+      animation-delay: 2.8s;
+    }
+
+    /* Continue Button */
+    #continueBtn {
+      margin-top: 30px;
+      padding: 12px 28px;
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+      background: gold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 3.5s;
+      transition: transform 0.3s;
+    }
+    #continueBtn:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Intro Section -->
+  <div id="intro">
+    <!-- Logo image -->
+    <img src="logo.jpg" alt="Khozza Logo" class="logo">
+
+    <!-- Brand text -->
+    <div class="brand">KHOZZA</div>
+
+    <!-- Tagline -->
+    <div class="tagline">Wallet • Watch Box • Fashion Items</div>
+
+    <!-- Model Image -->
+    <img src="model1.jpg" alt="Fashion Model" class="girl">
+
+    <!-- Continue Button -->
+    <button id="continueBtn">Continue</button>
+  </div>
+
+  <script>
+    document.getElementById("continueBtn").addEventListener("click", function(){
+      // Next page open karega
+      window.location.href = "home.html";
+    });
+  </script>
+
+</body>
+</html>ml>

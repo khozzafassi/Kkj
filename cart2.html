@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KHOZZA • Cart</title>
+<style>
+  body{font-family:sans-serif;background:#111;color:#fff;padding:20px}
+  h1{color:goldenrod}
+  table{width:100%;border-collapse:collapse;margin-top:20px}
+  th,td{border:1px solid #333;padding:10px;text-align:center}
+  th{background:#222}
+  button.remove{
+    background:#c62828;color:#fff;border:none;padding:6px 10px;
+    cursor:pointer;border-radius:6px;font-size:14px
+  }
+  button.remove:hover{background:#e53935}
+  .empty{margin-top:40px;text-align:center;color:#aaa}
+</style>
+</head>
+<body>
+  <h1>Your Cart 🛒</h1>
+  <div id="cartArea"></div>
+
+<script>
+function loadCart(){
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const area = document.getElementById("cartArea");
+
+  if(cart.length === 0){
+    area.innerHTML = "<p class='empty'>🛒 Your cart is empty</p>";
+    return;
+  }
+
+  let html = "<table><tr><th>Product</th><th>Color</th><th>Qty</th><th>Price</th><th>Action</th></tr>";
+  let total = 0;
+
+  cart.forEach((item,index)=>{
+    html += `<tr>
+              <td>${item.name}</td>
+              <td>${item.color}</td>
+              <td>${item.qty}</td>
+              <td>${item.price}</td>
+              <td><button class="remove" onclick="removeItem(${index})">Remove</button></td>
+            </tr>`;
+    total += parseFloat(item.price.replace("₹","")) * item.qty;
+  });
+
+  html += `</table><h2>Total: ₹${total}</h2>`;
+  area.innerHTML = html;
+}
+
+function removeItem(index){
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.splice(index,1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  loadCart();
+}
+
+loadCart();
+</script>
+</body>
+</html>

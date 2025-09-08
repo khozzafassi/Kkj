@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KHOZZA Admin Panel to manage orders for premium watch boxes, wallets, and fashion accessories." />
+    <meta name="author" content="KHOZZA" />
+    <meta name="keywords" content="admin panel, KHOZZA, order management" />
+    <title>KHOZZA • Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --card: #0f0f0f;
+            --muted: #bfb6a0;
+            --accent: #d4af37;
+            --secondary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-muted: #8f8872;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: Inter, Arial, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        h2 {
+            color: var(--accent);
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            border-collapse: collapse;
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        th {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        td {
+            color: var(--muted);
+        }
+        select, button {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0b0b0b;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        button {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            margin: 5px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background: #c19a2f;
+            transform: translateY(-2px);
+        }
+        .whatsapp-btn {
+            background: #25D366;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        .whatsapp-btn:hover {
+            background: #20b358;
+            transform: translateY(-2px);
+        }
+        .error {
+            color: red;
+            font-weight: 600;
+            text-align: center;
+            margin: 10px 0;
+        }
+        #authSection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        #adminContent {
+            display: none;
+        }
+        #authSection input {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0b0b0b;
+            color: var(--text-primary);
+        }
+        #authSection button {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            table { font-size: 14px; }
+            th, td { padding: 8px; }
+            select, button { padding: 6px; }
+            #authSection input { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="authSection">
+        <h2>KHOZZA Admin Login</h2>
+        <p>Enter Admin Password</p>
+        <input type="password" id="adminPassword" placeholder="Password">
+        <div class="error" id="authError"></div>
+        <button onclick="verifyPassword()">Login</button>
+    </div>
+
+    <div id="adminContent">
+        <h2>KHOZZA Admin Panel</h2>
+        <div id="error" class="error"></div>
+        <table id="orderTable">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Pincode</th>
+                    <th>UPI Ref</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="orderList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Hardcoded password (change this to your desired password)
+        const ADMIN_PASSWORD = 'khozza123';
+
+        function verifyPassword() {
+            try {
+                const password = document.getElementById('adminPassword').value;
+                if (password === ADMIN_PASSWORD) {
+                    document.getElementById('authSection').style.display = 'none';
+                    document.getElementById('adminContent').style.display = 'block';
+                    loadOrders();
+                } else {
+                    document.getElementById('authError').textContent = 'Incorrect password. Try again.';
+                    document.getElementById('adminPassword').value = '';
+                }
+            } catch (e) {
+                console.error('Error verifying password:', e);
+                document.getElementById('authError').textContent = 'Error during login. Please try again.';
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.getElementById('adminPassword').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                verifyPassword();
+            }
+        });
+
+        function deduplicateOrders(orders) {
+            const uniqueOrders = [];
+            const seen = new Set();
+            orders.forEach(order => {
+                const key = order.orderId;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueOrders.push(order);
+                } else {
+                    console.warn(`Duplicate order found: ${key}`);
+                }
+            });
+            return uniqueOrders;
+        }
+
+        function loadOrders() {
+            try {
+                let orders = JSON.parse(localStorage.getItem('khozzaOrders') || '[]');
+                orders = deduplicateOrders(orders);
+                localStorage.setItem('khozzaOrders', JSON.stringify(orders));
+
+                const orderList = document.getElementById('orderList');
+                if (orders.length === 0) {
+                    orderList.innerHTML = '<tr><td colspan="13">No orders found.</td></tr>';
+                    return;
+                }
+
+                orderList.innerHTML = orders.map(order => {
+                    const whatsappMessage = encodeURIComponent(
+                        `Order Update\n` +
+                        `Order ID: ${order.orderId}\n` +
+                        `Customer: ${order.name}\n` +
+                        `Phone: ${order.phone || 'N/A'}\n` +
+                        `Product: ${order.product} × ${order.qty}\n` +
+                        `Size: ${order.size || 'N/A'}\n` +
+                        `Color: ${order.color || 'N/A'}\n` +
+                        `Address: ${order.address || 'N/A'}, ${order.pincode || 'N/A'}\n` +
+                        `UPI Reference: ${order.upiRef || 'N/A'}\n` +
+                        `Total: ₹${order.totalAmount.toFixed(2)}\n` +
+                        `Status: ${order.status}`
+                    );
+                    const whatsappUrl = `https://wa.me/${order.phone || ''}?text=${whatsappMessage}`;
+
+                    return `
+                        <tr>
+                            <td>${order.orderId}</td>
+                            <td>${order.product}</td>
+                            <td>${order.qty}</td>
+                            <td>${order.size || 'N/A'}</td>
+                            <td>${order.color || 'N/A'}</td>
+                            <td>${order.name}</td>
+                            <td>${order.phone || 'N/A'}</td>
+                            <td>${order.address || 'N/A'}</td>
+                            <td>${order.pincode || 'N/A'}</td>
+                            <td>${order.upiRef || 'N/A'}</td>
+                            <td>₹${order.totalAmount.toFixed(2)}</td>
+                            <td>
+                                <select onchange="updateStatus('${order.orderId}', this.value)">
+                                    <option value="Order is Confirmed" ${order.status === 'Order is Confirmed' ? 'selected' : ''}>Order is Confirmed</option>
+                                    <option value="Your Payment is Confirmed" ${order.status === 'Your Payment is Confirmed' ? 'selected' : ''}>Your Payment is Confirmed</option>
+                                    <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                                    <option value="Packed" ${order.status === 'Packed' ? 'selected' : ''}>Packed</option>
+                                    <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                    <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                    <option value="Cancelled – Payment Not Complete" ${order.status === 'Cancelled – Payment Not Complete' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                            </td>
+                            <td>
+                                <a href="${whatsappUrl}" class="whatsapp-btn" target="_blank">Message Customer</a>
+                                <button onclick="deleteOrder('${order.orderId}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (e) {
+                console.error('Error loading orders:', e);
+                document.getElementById('error').textContent = 'Error loading orders. Please try again.';
+            }
+        }
+
+        function updateStatus(orderId, newStatus) {
+            try {
+                let orders = JSON.parse(localStorage.getItem('khozzaOrders') || '[]');
+                orders = orders.map(order => 
+                    order.orderId === orderId ? { ...order, status: newStatus } : order
+                );
+                orders = deduplicateOrders(orders);
+                localStorage.setItem('khozzaOrders', JSON.stringify(orders));
+                loadOrders();
+            } catch (e) {
+                console.error('Error updating status:', e);
+                document.getElementById('error').textContent = 'Error updating status. Please try again.';
+            }
+        }
+
+        function deleteOrder(orderId) {
+            if (!confirm(`Are you sure you want to delete order ${orderId}?`)) return;
+            try {
+                let orders = JSON.parse(localStorage.getItem('khozzaOrders') || '[]');
+                orders = orders.filter(order => order.orderId !== orderId);
+                orders = deduplicateOrders(orders);
+                localStorage.setItem('khozzaOrders', JSON.stringify(orders));
+                loadOrders();
+            } catch (e) {
+                console.error('Error deleting order:', e);
+                document.getElementById('error').textContent = 'Error deleting order. Please try again.';
+            }
+        }
+    </script>
+</body>
+</html>
